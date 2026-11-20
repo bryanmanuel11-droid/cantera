@@ -1,5 +1,5 @@
-import { sb, q } from '../supabase.js';
-import { esc, hoy, fecha, nombreCompleto, aviso, avisoError, cargando, vacio, descargarCSV, periodoActual } from '../ui.js';
+import { sb, q } from './supabase.js';
+import { esc, hoy, fecha, nombreCompleto, aviso, avisoError, cargando, vacio, descargarCSV, periodoActual } from './ui.js';
 
 const ESTADOS = [['presente', 'P', 'Presente'], ['ausente', 'A', 'Ausente'], ['tardanza', 'T', 'Tardanza'], ['excusa', 'E', 'Excusa']];
 

@@ -1,24 +1,24 @@
 import { sb, q, rpc, configurado, mensajeError } from './supabase.js';
-import { CONFIG } from '../config.js';
+import { CONFIG } from './config.js';
 import { esc, aviso, avisoError, abrirModal, campos, leer, cargando } from './ui.js';
 
 const MODULOS = [
-  { id: 'inicio', t: 'Inicio', i: '◧', m: () => import('./modulos/dashboard.js') },
-  { id: 'inscripciones', t: 'Inscripciones', i: '✎', m: () => import('./modulos/inscripciones.js') },
-  { id: 'deportistas', t: 'Deportistas', i: '⚽', m: () => import('./modulos/deportistas.js') },
-  { id: 'acudientes', t: 'Acudientes', i: '☺', m: () => import('./modulos/acudientes.js') },
-  { id: 'pagos', t: 'Pagos y cartera', i: '$', m: () => import('./modulos/pagos.js') },
-  { id: 'asistencia', t: 'Asistencia', i: '✓', m: () => import('./modulos/asistencia.js') },
+  { id: 'inicio', t: 'Inicio', i: '◧', m: () => import('./dashboard.js') },
+  { id: 'inscripciones', t: 'Inscripciones', i: '✎', m: () => import('./inscripciones.js') },
+  { id: 'deportistas', t: 'Deportistas', i: '⚽', m: () => import('./deportistas.js') },
+  { id: 'acudientes', t: 'Acudientes', i: '☺', m: () => import('./acudientes.js') },
+  { id: 'pagos', t: 'Pagos y cartera', i: '$', m: () => import('./pagos.js') },
+  { id: 'asistencia', t: 'Asistencia', i: '✓', m: () => import('./asistencia.js') },
   { sep: 'Organización' },
-  { id: 'grupos', t: 'Grupos', i: '▦', m: () => import('./modulos/grupos.js') },
-  { id: 'categorias', t: 'Categorías', i: '▤', m: () => import('./modulos/categorias.js') },
-  { id: 'entrenadores', t: 'Entrenadores', i: '♟', m: () => import('./modulos/entrenadores.js') },
-  { id: 'horarios', t: 'Horarios', i: '◷', m: () => import('./modulos/horarios.js') },
+  { id: 'grupos', t: 'Grupos', i: '▦', m: () => import('./grupos.js') },
+  { id: 'categorias', t: 'Categorías', i: '▤', m: () => import('./categorias.js') },
+  { id: 'entrenadores', t: 'Entrenadores', i: '♟', m: () => import('./entrenadores.js') },
+  { id: 'horarios', t: 'Horarios', i: '◷', m: () => import('./horarios.js') },
   { sep: 'Administración' },
-  { id: 'documentos', t: 'Documentos', i: '▭', m: () => import('./modulos/documentos.js') },
-  { id: 'gastos', t: 'Gastos', i: '↧', m: () => import('./modulos/gastos.js') },
-  { id: 'informes', t: 'Informes', i: '▥', m: () => import('./modulos/informes.js') },
-  { id: 'configuracion', t: 'Configuración', i: '⚙', m: () => import('./modulos/configuracion.js') },
+  { id: 'documentos', t: 'Documentos', i: '▭', m: () => import('./documentos.js') },
+  { id: 'gastos', t: 'Gastos', i: '↧', m: () => import('./gastos.js') },
+  { id: 'informes', t: 'Informes', i: '▥', m: () => import('./informes.js') },
+  { id: 'configuracion', t: 'Configuración', i: '⚙', m: () => import('./configuracion.js') },
 ];
 
 const raiz = document.getElementById('app');

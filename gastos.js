@@ -1,5 +1,5 @@
-import { crud } from '../crud.js';
-import { esc, fecha, hoy, pesos, periodoActual, avisoError, descargarCSV } from '../ui.js';
+import { crud } from './crud.js';
+import { esc, fecha, hoy, pesos, periodoActual, avisoError, descargarCSV } from './ui.js';
 import { subirArchivo, enlaceArchivo, campoArchivo } from './archivos.js';
 
 const CATEGORIAS = ['Arbitraje', 'Implementación deportiva', 'Uniformes', 'Alquiler de cancha', 'Transporte', 'Hidratación', 'Honorarios entrenadores', 'Torneos e inscripciones', 'Papelería', 'Servicios', 'Otros'];

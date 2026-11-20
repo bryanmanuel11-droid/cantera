@@ -1,5 +1,5 @@
-import { sb, q, rpc } from '../supabase.js';
-import { esc, fecha, edad, nombreCompleto, chip, aviso, avisoError, abrirModal, campos, leer, copiarTexto, cargando, vacio, confirmar } from '../ui.js';
+import { sb, q, rpc } from './supabase.js';
+import { esc, fecha, edad, nombreCompleto, chip, aviso, avisoError, abrirModal, campos, leer, copiarTexto, cargando, vacio, confirmar } from './ui.js';
 
 export const urlEnlace = (token) => {
   const u = new URL('inscripcion.html', location.href.split('#')[0]);

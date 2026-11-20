@@ -1,6 +1,6 @@
-import { sb, q } from '../supabase.js';
-import { crud, opciones } from '../crud.js';
-import { esc, abrirModal, nombreCompleto, edad, aviso, cargando, debounce } from '../ui.js';
+import { sb, q } from './supabase.js';
+import { crud, opciones } from './crud.js';
+import { esc, abrirModal, nombreCompleto, edad, aviso, cargando, debounce } from './ui.js';
 
 const DIAS = ['', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 

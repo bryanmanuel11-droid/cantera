@@ -1,5 +1,5 @@
-import { sb, q, rpc } from '../supabase.js';
-import { esc, pesos, numero, fecha, nombreCompleto, cargando } from '../ui.js';
+import { sb, q, rpc } from './supabase.js';
+import { esc, pesos, numero, fecha, nombreCompleto, cargando } from './ui.js';
 
 export async function vista(el, ctx) {
   el.innerHTML = cargando();

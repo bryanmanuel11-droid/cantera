@@ -1,5 +1,5 @@
-import { crud } from '../crud.js';
-import { esc, nombreCompleto, chip } from '../ui.js';
+import { crud } from './crud.js';
+import { esc, nombreCompleto, chip } from './ui.js';
 import { TIPOS_DOC_ADULTO } from './deportistas.js';
 
 export async function vista(el) {

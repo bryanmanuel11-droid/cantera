@@ -1,9 +1,9 @@
-import { sb, q, rpc } from '../supabase.js';
-import { crud, opciones } from '../crud.js';
+import { sb, q, rpc } from './supabase.js';
+import { crud, opciones } from './crud.js';
 import {
   esc, pesos, fecha, hoy, periodoActual, nombrePeriodo, nombreCompleto, chip, aviso, avisoError, abrirModal,
   campos, leer, buscadorDeportista, cargando, vacio, confirmar, descargarCSV, debounce,
-} from '../ui.js';
+} from './ui.js';
 
 const MEDIOS = ['Efectivo', 'Transferencia', 'Nequi', 'Daviplata', 'Tarjeta', 'Otro'];
 const CONCEPTOS_SUELTOS = ['Mensualidad', 'Inscripción', 'Uniforme', 'Torneo', 'Transporte', 'Otro'];

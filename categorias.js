@@ -1,6 +1,6 @@
-import { sb, q } from '../supabase.js';
-import { crud } from '../crud.js';
-import { esc, abrirModal, nombreCompleto, edad, chip, vacio } from '../ui.js';
+import { sb, q } from './supabase.js';
+import { crud } from './crud.js';
+import { esc, abrirModal, nombreCompleto, edad, chip, vacio } from './ui.js';
 
 export async function vista(el) {
   el.insertAdjacentHTML('beforeend', `<p class="ayuda">Cree las categorías que el club haya definido. El rango de edad es opcional; si lo indica, la plataforma sugerirá la categoría al aprobar cada inscripción.</p><div class="zona"></div>`);

@@ -1,5 +1,5 @@
-import { sb, q } from '../supabase.js';
-import { esc, pesos, fecha, hoy, edad, nombreCompleto, nombrePeriodo, cargando, vacio, descargarCSV, ETIQUETAS_ESTADO, chip } from '../ui.js';
+import { sb, q } from './supabase.js';
+import { esc, pesos, fecha, hoy, edad, nombreCompleto, nombrePeriodo, cargando, vacio, descargarCSV, ETIQUETAS_ESTADO, chip } from './ui.js';
 
 const INFORMES = [
   ['activos', 'Deportistas activos'],

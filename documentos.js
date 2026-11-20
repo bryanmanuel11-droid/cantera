@@ -1,6 +1,6 @@
-import { sb, q } from '../supabase.js';
-import { crud } from '../crud.js';
-import { esc, fecha, hoy, chip, nombreCompleto, cargando, vacio, avisoError, ETIQUETAS_ESTADO } from '../ui.js';
+import { sb, q } from './supabase.js';
+import { crud } from './crud.js';
+import { esc, fecha, hoy, chip, nombreCompleto, cargando, vacio, avisoError, ETIQUETAS_ESTADO } from './ui.js';
 import { subirArchivo, enlaceArchivo, campoArchivo } from './archivos.js';
 
 const TIPOS_SUGERIDOS = ['Documento de identidad', 'Registro civil', 'Certificado de EPS', 'Certificado médico', 'Foto', 'Autorización del acudiente', 'Consentimiento informado'];

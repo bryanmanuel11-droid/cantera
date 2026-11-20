@@ -1,5 +1,5 @@
 // Subida y consulta de archivos en Supabase Storage (bucket "archivos")
-import { sb } from '../supabase.js';
+import { sb } from './supabase.js';
 
 const PREFIJO = 'storage:';
 

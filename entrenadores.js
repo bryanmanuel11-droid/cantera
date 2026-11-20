@@ -1,5 +1,5 @@
-import { crud } from '../crud.js';
-import { esc, chip, nombreCompleto } from '../ui.js';
+import { crud } from './crud.js';
+import { esc, chip, nombreCompleto } from './ui.js';
 
 export async function vista(el) {
   crud(el, {

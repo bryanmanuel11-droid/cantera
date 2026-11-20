@@ -1,5 +1,5 @@
-import { crud, opciones } from '../crud.js';
-import { esc, fecha, nombreCompleto, hoy } from '../ui.js';
+import { crud, opciones } from './crud.js';
+import { esc, fecha, nombreCompleto, hoy } from './ui.js';
 
 const DIAS = [[1, 'Lunes'], [2, 'Martes'], [3, 'Miércoles'], [4, 'Jueves'], [5, 'Viernes'], [6, 'Sábado'], [7, 'Domingo']];
 const hora = (h) => (h ? h.slice(0, 5) : '');

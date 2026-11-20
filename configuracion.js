@@ -1,5 +1,5 @@
-import { sb, q } from '../supabase.js';
-import { esc, campos, leer, aviso, avisoError, descargar, hoy } from '../ui.js';
+import { sb, q } from './supabase.js';
+import { esc, campos, leer, aviso, avisoError, descargar, hoy } from './ui.js';
 
 const TABLAS_RESPALDO = ['clubes', 'categorias', 'entrenadores', 'grupos', 'horarios', 'entrenamientos', 'deportistas', 'acudientes',
   'deportista_acudiente', 'enlaces_inscripcion', 'solicitudes', 'tarifas', 'obligaciones', 'pagos', 'asistencia', 'documentos', 'gastos'];

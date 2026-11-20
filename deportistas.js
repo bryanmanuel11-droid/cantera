@@ -1,5 +1,5 @@
-import { sb, q, rpc } from '../supabase.js';
-import { esc, fecha, edad, pesos, nombreCompleto, chip, aviso, avisoError, abrirModal, campos, leer, cargando, vacio, nombrePeriodo, ETIQUETAS_ESTADO, descargarCSV } from '../ui.js';
+import { sb, q, rpc } from './supabase.js';
+import { esc, fecha, edad, pesos, nombreCompleto, chip, aviso, avisoError, abrirModal, campos, leer, cargando, vacio, nombrePeriodo, ETIQUETAS_ESTADO, descargarCSV } from './ui.js';
 
 export const TIPOS_DOC_DEP = [['RC', 'Registro civil'], ['TI', 'Tarjeta de identidad'], ['CC', 'Cédula de ciudadanía'], ['CE', 'Cédula de extranjería'], ['PPT', 'PPT'], ['PA', 'Pasaporte']];
 export const TIPOS_DOC_ADULTO = [['CC', 'Cédula de ciudadanía'], ['CE', 'Cédula de extranjería'], ['PPT', 'PPT'], ['PA', 'Pasaporte']];
