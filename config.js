@@ -7,5 +7,5 @@
 export const CONFIG = {
   SUPABASE_URL: 'https://yelzlapexvgzmexnvndk.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable__1-msB6QMOOmxInEdBHN6w_1-SJKv-9',   // clave publicable (sb_publishable_…)
-  NOMBRE_PLATAFORMA: 'Cantera',
+  NOMBRE_PLATAFORMA: 'SportHub',
 };

@@ -62,7 +62,8 @@ function pintar(club) {
           <span>Autorizo a <strong>${esc(club)}</strong> para el tratamiento de mis datos personales y los del deportista, con fines de gestión deportiva y administrativa, conforme a la Ley 1581 de 2012. Declaro que la información suministrada es verdadera.</span></label>
         <button class="btn btn-pri btn-grande btn-bloque enviar">Enviar inscripción</button>
       </section>
-    </form>`;
+    </form>
+    <footer class="pie-marca"><img src="icono.png" alt=""> Plataforma <strong>Sport<b>Hub</b></strong></footer>`;
   const form = raiz.querySelector('form');
   form.onsubmit = async (e) => {
     e.preventDefault();

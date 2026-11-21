@@ -1,11 +1,13 @@
 /* ===================== Cantera · estilos ===================== */
 :root {
-  --azul: #0f2a43; --azul-2: #173a5c; --azul-3: #24527d;
-  --verde: #12805c; --verde-2: #0e6a4c; --verde-claro: #e6f4ee;
+  /* Paleta SportHub (tomada del logo) */
+  --azul: #011b39; --azul-2: #0b2b52; --azul-3: #0051bf; --celeste: #00a7fc;
+  --verde: #3d8f0c; --verde-2: #2f7408; --verde-claro: #eaf5e1; --verde-marca: #5fac02;
+  --primario: #0051bf; --primario-2: #00429e;
   --rojo: #c0392b; --rojo-claro: #fbeaea; --ambar: #b7791f; --ambar-claro: #fdf4e3;
-  --azul-claro: #e8f0f8;
-  --fondo: #f3f5f8; --superficie: #fff; --borde: #e1e6ec; --texto: #1c2733; --suave: #5f6f80;
-  --radio: 10px; --sombra: 0 1px 2px rgba(15, 42, 67, .06), 0 2px 8px rgba(15, 42, 67, .05);
+  --azul-claro: #e7f0fc;
+  --fondo: #f3f6fa; --superficie: #fff; --borde: #dfe6ee; --texto: #14233a; --suave: #5b6b80;
+  --radio: 10px; --sombra: 0 1px 2px rgba(1, 27, 57, .06), 0 2px 8px rgba(1, 27, 57, .05);
   font-size: 15px;
 }
 * { box-sizing: border-box; }
@@ -19,8 +21,8 @@ code { background: var(--azul-claro); padding: 1px 5px; border-radius: 4px; }
 /* ---------- Botones ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid transparent; border-radius: 8px; padding: 9px 16px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; white-space: nowrap; transition: background .15s, border-color .15s; }
 .btn:disabled { opacity: .55; cursor: wait; }
-.btn-pri { background: var(--verde); color: #fff; }
-.btn-pri:hover { background: var(--verde-2); }
+.btn-pri { background: var(--primario); color: #fff; }
+.btn-pri:hover { background: var(--primario-2); }
 .btn-sec { background: var(--superficie); color: var(--texto); border-color: var(--borde); }
 .btn-sec:hover { border-color: var(--azul-3); }
 .btn-peligro { background: var(--rojo); color: #fff; }
@@ -29,7 +31,7 @@ code { background: var(--azul-claro); padding: 1px 5px; border-radius: 4px; }
 .btn-bloque { width: 100%; }
 .btn-mini { font: inherit; font-size: .82rem; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--borde); background: var(--superficie); color: var(--texto); cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap; }
 .btn-mini:hover { border-color: var(--azul-3); }
-.btn-mini.pri { background: var(--verde); border-color: var(--verde); color: #fff; }
+.btn-mini.pri { background: var(--primario); border-color: var(--primario); color: #fff; }
 .btn-mini.peligro { color: var(--rojo); }
 .btn-mini.btn-whatsapp, .btn.btn-mini { padding: 5px 10px; }
 .btn-icono { background: none; border: 0; font-size: 1.25rem; cursor: pointer; padding: 6px 10px; color: inherit; border-radius: 6px; }
@@ -43,11 +45,11 @@ code { background: var(--azul-claro); padding: 1px 5px; border-radius: 4px; }
 .marca.grande { font-size: 1.6rem; color: var(--azul); padding: 0; justify-content: center; }
 .logo { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--verde); color: #fff; font-weight: 800; }
 .marca.grande .logo { width: 42px; height: 42px; font-size: 1.3rem; }
-.club-nombre { padding: 0 18px 14px; font-size: .85rem; color: #9fb4c9; border-bottom: 1px solid var(--azul-2); }
+.club-nombre { padding: 2px 18px 14px; font-size: .85rem; color: #9fb4c9; border-bottom: 1px solid var(--azul-2); }
 .menu nav { padding: 8px 8px; flex: 1; }
 .menu nav a { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; color: inherit; text-decoration: none; font-weight: 500; }
 .menu nav a:hover { background: var(--azul-2); color: #fff; }
-.menu nav a.activo { background: var(--azul-3); color: #fff; }
+.menu nav a.activo { background: var(--azul-3); color: #fff; box-shadow: inset 3px 0 0 var(--verde-marca); }
 .menu .ico { width: 20px; text-align: center; opacity: .85; }
 .menu .insignia { margin-left: auto; }
 .menu-sep { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: #7f98b1; padding: 14px 12px 4px; }
@@ -65,7 +67,7 @@ main { min-width: 0; }
 .insignia:empty { display: none; }
 
 /* ---------- Acceso ---------- */
-.acceso { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: linear-gradient(160deg, var(--azul) 0%, var(--azul-3) 100%); }
+.acceso { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: radial-gradient(circle at 85% 10%, rgba(0, 167, 252, .25), transparent 45%), linear-gradient(160deg, var(--azul) 0%, #022a5c 60%, var(--azul-3) 130%); }
 .acceso-caja { background: var(--superficie); border-radius: 16px; padding: 32px; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0, 0, 0, .25); }
 .acceso-caja h2 { font-size: 1.15rem; margin: 22px 0 14px; }
 .acceso-caja .sub { text-align: center; color: var(--suave); margin: 6px 0 0; }
@@ -118,7 +120,7 @@ a.tarjeta[href]:hover { border-color: var(--azul-3); transform: translateY(-1px)
 .resumen-tabla { color: var(--suave); font-size: .9rem; margin-bottom: 8px; }
 .pestañas { display: flex; gap: 4px; border-bottom: 2px solid var(--borde); margin-bottom: 18px; overflow-x: auto; }
 .pestañas button { background: none; border: 0; font: inherit; font-weight: 600; color: var(--suave); padding: 10px 14px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
-.pestañas button.activo { color: var(--azul); border-bottom-color: var(--verde); }
+.pestañas button.activo { color: var(--azul); border-bottom-color: var(--verde-marca); }
 
 /* ---------- Formularios ---------- */
 input, select, textarea { font: inherit; color: inherit; border: 1px solid #cdd5de; border-radius: 8px; padding: 9px 11px; background: #fff; width: 100%; }
@@ -161,7 +163,7 @@ textarea { resize: vertical; }
 .vacio { text-align: center; color: var(--suave); padding: 36px 16px; background: var(--superficie); border: 1px dashed var(--borde); border-radius: var(--radio); }
 .vacio .btn { margin-top: 8px; }
 .cargando { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--suave); padding: 40px; }
-.spinner { width: 18px; height: 18px; border: 3px solid #d5dde6; border-top-color: var(--verde); border-radius: 50%; animation: girar .8s linear infinite; }
+.spinner { width: 18px; height: 18px; border: 3px solid #d5dde6; border-top-color: var(--azul-3); border-radius: 50%; animation: girar .8s linear infinite; }
 @keyframes girar { to { transform: rotate(360deg); } }
 
 /* ---------- Modales y avisos ---------- */
@@ -212,7 +214,7 @@ textarea { resize: vertical; }
 .num { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--azul); color: #fff; font-weight: 700; flex-shrink: 0; font-size: .9rem; }
 .opciones-pago { display: grid; gap: 8px; margin-bottom: 12px; }
 .opcion { display: flex; align-items: center; gap: 12px; border: 1px solid var(--borde); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
-.opcion:has(input:checked) { border-color: var(--verde); background: var(--verde-claro); }
+.opcion:has(input:checked) { border-color: var(--azul-3); background: var(--azul-claro); }
 .opcion input { width: auto; }
 .opcion > span:not(.chip) { flex: 1; }
 .opcion small { display: block; color: var(--suave); }
@@ -283,3 +285,14 @@ body.publico { background: linear-gradient(180deg, var(--azul) 0, var(--azul) 22
   body { background: #fff; }
   .tabla { font-size: 11px; }
 }
+
+/* ---------- Marca SportHub ---------- */
+.marca-icono { width: 34px; height: 34px; object-fit: contain; flex-shrink: 0; }
+.marca-texto { font-weight: 800; font-style: italic; font-size: 1.3rem; letter-spacing: -.02em; color: #fff; }
+.marca-texto b, .pie-marca b { color: var(--celeste); font-weight: 800; }
+.logo-acceso { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto 4px; }
+.acceso-caja h2 { text-align: left; }
+.pie-marca { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--suave); font-size: .85rem; margin-top: 18px; }
+.pie-marca img { width: 22px; height: 22px; object-fit: contain; }
+.pie-marca strong { font-style: italic; color: var(--azul); font-weight: 800; }
+.form-cabecera .logo { background: var(--azul-3); }

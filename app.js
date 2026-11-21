@@ -35,8 +35,7 @@ function pantallaAcceso(modo = 'entrar') {
   raiz.innerHTML = `
     <div class="acceso">
       <div class="acceso-caja">
-        <div class="marca grande"><span class="logo">${esc(CONFIG.NOMBRE_PLATAFORMA[0])}</span>${esc(CONFIG.NOMBRE_PLATAFORMA)}</div>
-        <p class="sub">Gestión deportiva para clubes y escuelas</p>
+        <img class="logo-acceso" src="logo.png" alt="${esc(CONFIG.NOMBRE_PLATAFORMA)} · Gestión deportiva para clubes y escuelas">
         <h2>${textos[0]}</h2>
         <form class="pila">
           <div class="campo"><label>Correo electrónico</label><input name="correo" type="email" required autocomplete="email"></div>
@@ -76,7 +75,7 @@ function pantallaAcceso(modo = 'entrar') {
 function pantallaCrearClub() {
   raiz.innerHTML = `
     <div class="acceso"><div class="acceso-caja">
-      <div class="marca grande"><span class="logo">${esc(CONFIG.NOMBRE_PLATAFORMA[0])}</span>${esc(CONFIG.NOMBRE_PLATAFORMA)}</div>
+      <img class="logo-acceso" src="logo.png" alt="${esc(CONFIG.NOMBRE_PLATAFORMA)}">
       <h2>Registre su club</h2>
       <p class="sub">Este paso se hace una sola vez. Usted quedará como administrador.</p>
       <form class="pila">
@@ -100,7 +99,7 @@ function pintarMarco() {
   raiz.innerHTML = `
     <div class="marco">
       <aside class="menu">
-        <div class="marca"><span class="logo">${esc(CONFIG.NOMBRE_PLATAFORMA[0])}</span>${esc(CONFIG.NOMBRE_PLATAFORMA)}</div>
+        <div class="marca"><img src="icono.png" alt="" class="marca-icono"><span class="marca-texto">Sport<b>Hub</b></span></div>
         <div class="club-nombre">${esc(ctx.club.nombre)}</div>
         <nav>${MODULOS.map((m) => m.sep ? `<div class="menu-sep">${esc(m.sep)}</div>` :
           `<a href="#/${m.id}" data-id="${m.id}"><span class="ico">${m.i}</span>${esc(m.t)}<span class="insignia" hidden></span></a>`).join('')}</nav>
