@@ -1,5 +1,5 @@
 import { sb, q, rpc } from './supabase.js';
-import { esc, fecha, edad, pesos, nombreCompleto, chip, aviso, avisoError, abrirModal, campos, leer, cargando, vacio, nombrePeriodo, ETIQUETAS_ESTADO, descargarCSV } from './ui.js';
+import { esc, fecha, edad, pesos, nombreCompleto, chip, aviso, avisoError, abrirModal, campos, leer, cargando, vacio, nombrePeriodo, ETIQUETAS_ESTADO, descargarCSV, copiarTexto } from './ui.js';
 
 export const TIPOS_DOC_DEP = [['RC', 'Registro civil'], ['TI', 'Tarjeta de identidad'], ['CC', 'Cédula de ciudadanía'], ['CE', 'Cédula de extranjería'], ['PPT', 'PPT'], ['PA', 'Pasaporte']];
 export const TIPOS_DOC_ADULTO = [['CC', 'Cédula de ciudadanía'], ['CE', 'Cédula de extranjería'], ['PPT', 'PPT'], ['PA', 'Pasaporte']];
@@ -55,7 +55,9 @@ export async function vista(el, ctx) {
       <select class="f-estado"><option value="">Todos (sin rechazados)</option>${['activo', 'pendiente', 'inactivo', 'retirado', 'rechazado'].map((e) => `<option value="${e}" ${e === 'activo' ? 'selected' : ''}>${ETIQUETAS_ESTADO[e]}</option>`).join('')}</select>
       <select class="f-cat"><option value="">Todas las categorías</option>${cats.map((c) => `<option value="${c.id}">${esc(c.nombre)}</option>`).join('')}</select>
       <select class="f-grupo"><option value="">Todos los grupos</option><option value="__sin">Sin grupo</option>${grupos.map((g) => `<option value="${g.id}">${esc(g.nombre)}</option>`).join('')}</select>
+      <label class="campo-check"><input type="checkbox" class="f-incompletos"> Solo datos incompletos</label>
       <span class="espaciador"></span>
+      <button class="btn btn-sec enlaces-act">Enlaces de actualización</button>
       <button class="btn btn-sec exportar">Exportar</button>
       <button class="btn btn-pri nuevo">+ Nuevo deportista</button>
     </div>
@@ -76,9 +78,10 @@ export async function vista(el, ctx) {
   }
 
   function filtradas() {
+    const base = el.querySelector('.f-incompletos').checked ? filas.filter(incompleto) : filas;
     const palabras = el.querySelector('.filtro').value.trim().toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').split(/\s+/).filter(Boolean);
-    if (!palabras.length) return filas;
-    return filas.filter((d) => {
+    if (!palabras.length) return base;
+    return base.filter((d) => {
       const t = `${d.nombres} ${d.apellidos} ${d.numero_documento} ${d.codigo}`.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
       return palabras.every((p) => t.includes(p));
     });
@@ -97,9 +100,11 @@ export async function vista(el, ctx) {
         <td data-l="Estado">${chip(d.estado)}</td></tr>`; }).join('')}</tbody></table>`;
   }
 
-  zona.addEventListener('click', (e) => { const tr = e.target.closest('tr[data-id]'); if (tr) ficha(tr.dataset.id, { cats, grupos, alCambiar: cargar }); });
+  zona.addEventListener('click', (e) => { const tr = e.target.closest('tr[data-id]'); if (tr) ficha(tr.dataset.id, { cats, grupos, alCambiar: cargar, club: ctx.club }); });
   el.querySelector('.filtro').addEventListener('input', pintar);
   el.querySelectorAll('select').forEach((s) => s.addEventListener('change', cargar));
+  el.querySelector('.f-incompletos').addEventListener('change', pintar);
+  el.querySelector('.enlaces-act').onclick = () => enlacesMasivos(filtradas(), ctx);
   el.querySelector('.nuevo').onclick = () => nuevoDeportista({ cats, grupos, alCambiar: cargar });
   el.querySelector('.exportar').onclick = () => descargarCSV('deportistas', filtradas(), [
     ['codigo', 'Código'], ['nombres', 'Nombres'], ['apellidos', 'Apellidos'], ['tipo_documento', 'Tipo doc.'], ['numero_documento', 'Documento'],
@@ -108,7 +113,7 @@ export async function vista(el, ctx) {
     [(d) => nombreCompleto(d.deportista_acudiente?.[0]?.acudientes), 'Acudiente'], [(d) => d.deportista_acudiente?.[0]?.acudientes?.telefono || '', 'Teléfono acudiente'],
   ]);
   await cargar();
-  if (ctx.params[0]) ficha(ctx.params[0], { cats, grupos, alCambiar: cargar });
+  if (ctx.params[0]) ficha(ctx.params[0], { cats, grupos, alCambiar: cargar, club: ctx.club });
 }
 
 function nuevoDeportista({ cats, grupos, alCambiar }) {
@@ -137,7 +142,7 @@ export async function ficha(id, opciones = {}) {
   const m = abrirModal({ titulo: 'Ficha del deportista', ancho: 'ancho', cuerpo: cargando() });
   const cuerpo = m.querySelector('.modal-cuerpo');
   async function pintar() {
-    const [[d], vinc, obls, pagos, asis, docs, sol] = await Promise.all([
+    const [[d], vinc, obls, pagos, asis, docs, sol, acts] = await Promise.all([
       q(sb.from('deportistas').select('*').eq('id', id)),
       q(sb.from('deportista_acudiente').select('parentesco, principal, acudientes(*)').eq('deportista_id', id)),
       q(sb.from('v_obligaciones').select('*').eq('deportista_id', id).eq('anulada', false).order('periodo', { ascending: false })),
@@ -145,6 +150,7 @@ export async function ficha(id, opciones = {}) {
       q(sb.from('asistencia').select('estado, fecha').eq('deportista_id', id).order('fecha', { ascending: false }).limit(500)),
       q(sb.from('documentos').select('*').eq('deportista_id', id).order('creado_en', { ascending: false })),
       q(sb.from('solicitudes').select('estado, creado_en, revisado_en, motivo_rechazo').eq('deportista_id', id)),
+      q(sb.from('actualizaciones').select('creado_en').eq('deportista_id', id).order('creado_en')).catch(() => []),
     ]);
     if (!d) { cuerpo.innerHTML = vacio('Deportista no encontrado.'); return; }
     m.querySelector('h3').textContent = nombreCompleto(d);
@@ -157,6 +163,7 @@ export async function ficha(id, opciones = {}) {
       <div class="ficha-cabecera"><span class="codigo">${esc(d.codigo)}</span>${chip(d.estado)}
         <span class="espaciador"></span>
         <button class="btn btn-sec btn-mini editar">Editar datos</button>
+        <button class="btn btn-sec btn-mini enlace-act">Enlace de actualización</button>
         <a class="btn btn-pri btn-mini" href="#/pagos/registrar/${d.id}">Registrar pago</a></div>
       <div class="dos-columnas">
         <section><h4>Datos personales</h4><dl class="datos">
@@ -189,11 +196,13 @@ export async function ficha(id, opciones = {}) {
           <h4>Historial</h4>
           <ul class="historial">
             <li>Inscripción: ${fecha(d.fecha_inscripcion)}</li>
+            ${acts.map((x) => `<li>Datos actualizados por el acudiente el ${fecha(x.creado_en)}</li>`).join('')}
             ${sol.map((s) => `<li>Solicitud recibida ${fecha(s.creado_en)} — ${esc(ETIQUETAS_ESTADO[s.estado])}${s.revisado_en ? ` el ${fecha(s.revisado_en)}` : ''}${s.motivo_rechazo ? ` (${esc(s.motivo_rechazo)})` : ''}</li>`).join('')}
           </ul>
         </section>
       </div>`;
 
+    cuerpo.querySelector('.enlace-act').onclick = () => enlacesMasivos([{ ...d, deportista_acudiente: vinc }], { club: opciones.club }, true);
     cuerpo.querySelector('.editar').onclick = () => abrirModal({
       titulo: `Editar ${nombreCompleto(d)}`, ancho: 'ancho', cuerpo: campos(camposDeportista(cats, grupos), d),
       botones: [{ texto: 'Cancelar', clase: 'btn-sec' }, { texto: 'Guardar', clase: 'btn-pri', accion: async (mm) => {
@@ -221,4 +230,71 @@ export async function ficha(id, opciones = {}) {
     cuerpo.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', () => m.cerrar()));
   }
   try { await pintar(); } catch (e) { cuerpo.innerHTML = vacio(e.message); }
+}
+
+// ---------------- Enlaces de actualización de datos ----------------
+export const incompleto = (d) => {
+  const a = d.deportista_acudiente?.[0]?.acudientes;
+  return !d.fecha_nacimiento || !a || !a.telefono;
+};
+const urlActualizar = (token) => {
+  const u = new URL('actualizar.html', location.href.split('#')[0]);
+  u.searchParams.set('t', token);
+  return u.toString();
+};
+
+async function enlacesMasivos(lista, ctx, individual = false) {
+  const club = ctx.club?.nombre || document.querySelector('.club-nombre')?.textContent || 'el club';
+  if (!lista.length) return aviso('No hay deportistas en la lista actual.', 'error');
+  let deps = lista;
+  if (!individual) {
+    const incompletos = lista.filter(incompleto);
+    const elegido = await new Promise((resolve) => {
+      const m = abrirModal({
+        titulo: 'Enlaces de actualización de datos',
+        cuerpo: `<p>Cada familia recibe un enlace personal para revisar y completar los datos de su hijo (fecha de nacimiento, EPS, teléfono, parentesco…). El enlace sirve una vez y vence en 30 días.</p>
+          <p>¿Para quiénes quiere generar enlaces?</p>`,
+        botones: [
+          { texto: `Todos los de la lista (${lista.length})`, clase: 'btn-sec', accion: () => resolve(lista) },
+          { texto: `Solo datos incompletos (${incompletos.length})`, clase: 'btn-pri', accion: () => resolve(incompletos) },
+        ],
+      });
+      m.querySelector('.cerrar').addEventListener('click', () => resolve(null));
+    });
+    if (!elegido) return;
+    if (!elegido.length) return aviso('Ningún deportista de la lista tiene datos incompletos.');
+    deps = elegido;
+  }
+  const m = abrirModal({ titulo: individual ? `Enlace de actualización · ${nombreCompleto(deps[0])}` : `Enlaces de actualización (${deps.length})`, ancho: 'ancho', cuerpo: cargando('Generando enlaces…') });
+  const cuerpo = m.querySelector('.modal-cuerpo');
+  try {
+    const enlaces = await rpc('generar_enlaces_actualizacion', { p_deportistas: deps.map((d) => d.id) });
+    const token = Object.fromEntries(enlaces.map((e) => [e.deportista_id, e.token]));
+    const filas = deps.map((d) => {
+      const a = d.deportista_acudiente?.[0]?.acudientes;
+      const url = urlActualizar(token[d.id]);
+      const saludo = a?.nombres ? `Hola ${a.nombres.split(' ')[0]}. ` : 'Hola. ';
+      const texto = `${saludo}Desde ${club} le pedimos actualizar los datos de ${d.nombres} en este enlace (toma 3 minutos):\n${url}`;
+      const tel = (a?.telefono || '').replace(/\D/g, '');
+      const wa = tel ? `https://wa.me/57${tel.slice(-10)}?text=${encodeURIComponent(texto)}` : `https://wa.me/?text=${encodeURIComponent(texto)}`;
+      return { d, a, url, texto, wa };
+    });
+    cuerpo.innerHTML = `
+      <p class="ayuda">Envíe a cada familia su enlace. El botón WhatsApp abre el mensaje listo; si no hay teléfono registrado, WhatsApp le deja elegir el contacto.</p>
+      ${individual ? '' : '<div class="atajos" style="margin:0 0 12px"><button class="btn btn-sec copiar-todo">Copiar todos los mensajes</button><button class="btn btn-sec csv">Descargar lista (CSV)</button></div>'}
+      <table class="tabla compacta"><thead><tr><th>Deportista</th><th>Acudiente</th><th></th></tr></thead><tbody>
+      ${filas.map((f, i) => `<tr data-i="${i}"><td data-l="Deportista"><strong>${esc(nombreCompleto(f.d))}</strong></td>
+        <td data-l="Acudiente">${f.a ? esc(nombreCompleto(f.a)) : '<span class="texto-alerta">Sin acudiente</span>'}</td>
+        <td class="acciones"><button class="btn-mini copiar">Copiar enlace</button><a class="btn-mini enlace-wa" target="_blank" rel="noopener" href="${esc(f.wa)}">WhatsApp</a></td></tr>`).join('')}
+      </tbody></table>`;
+    cuerpo.querySelectorAll('.copiar').forEach((b) => b.onclick = () => copiarTexto(filas[Number(b.closest('tr').dataset.i)].url));
+    cuerpo.querySelector('.copiar-todo')?.addEventListener('click', () => copiarTexto(filas.map((f) => `${nombreCompleto(f.d)}:\n${f.url}`).join('\n\n')));
+    cuerpo.querySelector('.csv')?.addEventListener('click', () => descargarCSV('enlaces-actualizacion', filas, [
+      [(f) => f.d.codigo, 'Código'], [(f) => nombreCompleto(f.d), 'Deportista'], [(f) => nombreCompleto(f.a), 'Acudiente'],
+      [(f) => f.a?.telefono || '', 'Teléfono'], ['url', 'Enlace'],
+    ]));
+  } catch (e) {
+    cuerpo.innerHTML = vacio(/generar_enlaces_actualizacion|does not exist|schema cache/.test(e.message)
+      ? 'Falta instalar la función en Supabase: ejecute el archivo 04_actualizacion_datos.sql.' : e.message);
+  }
 }
